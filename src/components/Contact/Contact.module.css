@@ -1,0 +1,14 @@
+.title {
+    margin: 0;
+  }
+  
+  .item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .phone {
+    font-size: 18px;
+    color: #000;
+  }
