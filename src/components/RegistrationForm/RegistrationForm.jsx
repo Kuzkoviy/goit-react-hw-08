@@ -1,16 +1,15 @@
 import { useId } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contacts/operations";
+import { register } from "../../redux/auth/operations";
 import * as Yup from "yup";
-import css from "./ContactForm.module.css";
-import clsx from "clsx";
+import css from "./RegistrationForm.module.css";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
-export default function ContactForm() {
+export default function RegistrationForm() {
   const fieldId = useId();
   const dispatch = useDispatch();
 
@@ -19,22 +18,22 @@ export default function ContactForm() {
       .min(3, "Too Short!")
       .max(50, "Max symbols 50!")
       .required("This field is required!"),
-    number: Yup.string()
-      .matches(
-        /^\d{3}-\d{2}-\d{2}$/,
-        "Phone number must be in the format 227-91-26"
-      )
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("This field is required!"),
+    password: Yup.string()
+      .min(15, "Password must be at least 15 characters long")
       .required("This field is required!")
   });
 
   const handleSubmit = (values, { resetForm }) => {
-    dispatch(addContact(values));
+    dispatch(register(values));
     resetForm();
   };
 
   return (
     <Formik
-      initialValues={{ name: "", number: "" }}
+      initialValues={{ name: "", email: "", password: "" }}
       validationSchema={FeedbackSchema}
       onSubmit={handleSubmit}
     >
@@ -49,30 +48,39 @@ export default function ContactForm() {
             name="name"
             className={css.input}
           />
-          <ErrorMessage
-            className={clsx(css.error, "MuiTypography-root")}
-            name="name"
-            component="span"
-          />
+          <ErrorMessage className={css.error} name="name" component="span" />
         </Box>
         <Box className={css.field}>
-          <Typography component="label" htmlFor={`number-${fieldId}`}>
-            Phone Number
+          <Typography component="label" htmlFor={`email-${fieldId}`}>
+            Email
           </Typography>
           <Field
-            type="text"
-            id={`number-${fieldId}`}
-            name="number"
+            type="email"
+            id={`email-${fieldId}`}
+            name="email"
             className={css.input}
           />
+          <ErrorMessage className={css.error} name="email" component="span" />
+        </Box>
+        <Box className={css.field}>
+          <Typography component="label" htmlFor={`password-${fieldId}`}>
+            Password
+          </Typography>
+          <Field
+            type="password"
+            id={`password-${fieldId}`}
+            name="password"
+            className={css.input}
+          />
+          <span>Example: examplepwd12345</span>
           <ErrorMessage
-            className={clsx(css.error, "MuiTypography-root")}
-            name="number"
+            className={css.error}
+            name="password"
             component="span"
           />
         </Box>
         <Button type="submit" variant="contained" className={css.button}>
-          Add contact
+          Register
         </Button>
       </Form>
     </Formik>

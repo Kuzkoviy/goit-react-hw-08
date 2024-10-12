@@ -1,9 +1,11 @@
 import css from "./Loading.module.css";
+import clsx from "clsx";
+import Box from "@mui/material/Box";
 
 export default function Loading() {
   return (
-    <div className={css.loadingContainer}>
-      <div className={css.spinner}></div>
-    </div>
+    <Box className={clsx(css.loadingContainer)}>
+      <div className={clsx(css.spinner)}></div>
+    </Box>
   );
 }
